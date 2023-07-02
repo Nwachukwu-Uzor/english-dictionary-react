@@ -1,33 +1,33 @@
 export interface DictionaryResult {
-  word: string;
-  phonetics: Phonetic[];
-  meanings: Meaning[];
-  license: License;
-  sourceUrls: string[];
+  word?: string;
+  phonetics?: Phonetic[];
+  meanings?: Meaning[];
+  license?: License;
+  sourceUrls?: string[];
   phonetic?: string;
 }
 
 export interface License {
-  name: string;
-  url: string;
+  name?: string;
+  url?: string;
 }
 
 export interface Meaning {
-  partOfSpeech: string;
-  definitions: Definition[];
-  synonyms: string[];
-  antonyms: string[];
+  partOfSpeech?: string;
+  definitions?: Definition[];
+  synonyms?: string[];
+  antonyms?: string[];
 }
 
 export interface Definition {
-  definition: string;
-  synonyms: string[];
-  antonyms: string[];
+  definition?: string;
+  synonyms?: string[];
+  antonyms?: string[];
 }
 
 export interface Phonetic {
-  audio: string;
-  sourceUrl: string;
+  audio?: string;
+  sourceUrl?: string;
   license?: License;
   text?: string;
 }
