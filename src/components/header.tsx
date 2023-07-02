@@ -26,13 +26,34 @@ export const Header: React.FC = () => {
     <div className="py-2 flex items-center justify-between">
       <BiBookAlt className="text-xl lg:text-3xl text-gray-text" />
       <div className="flex items-center gap-2 lg:gap-4">
-        <Dropdown label={fontsMap[font]} inline size="sm" dismissOnClick={true}>
-          {fontOptions?.map((font) => (
+        <Dropdown
+          label={fontsMap?.[font]}
+          inline
+          size="sm"
+          dismissOnClick={true}
+          className={`w-[170px] ${
+            theme === "light"
+              ? "bg-white text-primary-text"
+              : "bg-gray-bg text-white ring-2 ring-accent-purple"
+          }`}
+        >
+          {fontOptions?.map((fontOption) => (
             <Dropdown.Item
-              key={font.id}
-              onClick={() => handleChangeFont(font.value)}
+              key={fontOption.id}
+              onClick={() => handleChangeFont(fontOption.value)}
+              className={`${
+                theme === "light"
+                  ? "text-primary-text"
+                  : "text-white hover:bg-black"
+              } ${
+                font === fontOption.value
+                  ? theme === "light"
+                    ? "bg-gray-300"
+                    : "bg-black"
+                  : ""
+              }`}
             >
-              {font.name}
+              {fontOption.name}
             </Dropdown.Item>
           ))}
         </Dropdown>

@@ -7,8 +7,12 @@ const App: React.FC = () => {
   const { theme, font } = useContext(ThemeContext) as ThemeContextType;
   return (
     <main
-      className={`${theme === "light" ? "bg-white" : "bg-black-bg"} ${
-        font === "san-serif"
+      className={`${
+        theme === "light"
+          ? "bg-white text-primary-text"
+          : "bg-black-bg text-white"
+      } ${
+        font === "sans-serif"
           ? "font-sans"
           : font === "serif"
           ? "font-serif"

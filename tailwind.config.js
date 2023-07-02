@@ -12,6 +12,7 @@ export default {
         "black-bg": "#050505",
         "primary-text": "#2D2D2D",
         "gray-text": "#757575",
+        "gray-bg": "#1F1F1F",
       },
     },
   },
