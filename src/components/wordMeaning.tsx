@@ -8,15 +8,18 @@ interface Props {
 export const WordMeaning: React.FC<Props> = ({ meaning }) => {
   return (
     <article>
-      <div className="flex justify-between gap-2 lg:gap-8 items-center">
-        <h2 className="text-lg lg:txt-xl font-medium text-gray-text">
+      <div className="flex justify-between gap-2 lg:gap-8 items-center mb-3 mt-2">
+        <h2 className="text-lg lg:text-xl font-medium text-gray-400">
           {meaning?.partOfSpeech}
         </h2>
-        <hr className="flex-1 text-red-500" />
+        <hr className="flex-1 border border-gray-300" />
       </div>
-      {meaning?.definitions ? (
-        <div>
-          <ul>
+      {meaning?.definitions?.length ? (
+        <div className="my-2 lg:my-4">
+          <h2 className="text-base lg:text-lg font-medium text-gray-text mb-1">
+            Meaning
+          </h2>
+          <ul className="px-2 lg:px-4">
             {meaning?.definitions?.map((definition) => (
               <li
                 key={definition?.definition}
@@ -29,6 +32,7 @@ export const WordMeaning: React.FC<Props> = ({ meaning }) => {
           </ul>
         </div>
       ) : null}
+      {meaning?.synonyms?.length ? <div></div> : null}
     </article>
   );
 };

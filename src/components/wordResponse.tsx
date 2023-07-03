@@ -41,7 +41,7 @@ export const WordResponse: React.FC<Props> = ({ definitionResponse }) => {
           </p>
         </div>
         <div
-          className="h-8 w-8 lg:h-12 lg:w-12 flex items-center justify-center bg-accent-purple/10 rounded-full active:opacity-20 duration-150 cursor-pointer hover:opacity-60"
+          className="h-8 w-8 lg:h-12 lg:w-12 flex items-center justify-center bg-accent-purple/30 rounded-full active:opacity-20 duration-150 cursor-pointer hover:opacity-60"
           onClick={handlePlayAudio}
         >
           <BsFillPlayFill className="text-accent-purple text-xl lg:text-3xl" />
