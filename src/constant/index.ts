@@ -1,0 +1,1 @@
+export { dictionaryBaseApi } from "./endpoints";

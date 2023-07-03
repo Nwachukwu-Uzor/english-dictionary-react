@@ -1,134 +1,53 @@
 import React, { useState } from "react";
-import { Header, Container, WordSearch, WordResponse } from "../components";
+import { Spinner } from "flowbite-react";
 
-const dummyResponse = [
-  {
-    word: "advance",
-    phonetic: "/ədˈvaːns/",
-    phonetics: [
-      { text: "/ədˈvaːns/", audio: "" },
-      { text: "/ədˈvaːns/", audio: "" },
-      { text: "/ədˈvɑːns/", audio: "" },
-      {
-        text: "/ədˈvæns/",
-        audio:
-          "https://api.dictionaryapi.dev/media/pronunciations/en/advance-us.mp3",
-        sourceUrl: "https://commons.wikimedia.org/w/index.php?curid=1446810",
-        license: {
-          name: "BY-SA 3.0",
-          url: "https://creativecommons.org/licenses/by-sa/3.0",
-        },
-      },
-    ],
-    meanings: [
-      {
-        partOfSpeech: "noun",
-        definitions: [
-          {
-            definition: "A forward move; improvement or progression.",
-            synonyms: [],
-            antonyms: [],
-            example: "an advance in health or knowledge",
-          },
-          {
-            definition:
-              "An amount of money or credit, especially given as a loan, or paid before it is due; an advancement.",
-            synonyms: [],
-            antonyms: [],
-          },
-          {
-            definition: "An addition to the price; rise in price or value.",
-            synonyms: [],
-            antonyms: [],
-            example: "an advance on the prime cost of goods",
-          },
-          {
-            definition:
-              "(in the plural) An opening approach or overture, especially of an unwelcome or sexual nature.",
-            synonyms: [],
-            antonyms: [],
-          },
-        ],
-        synonyms: [],
-        antonyms: ["regress", "regression"],
-      },
-      {
-        partOfSpeech: "verb",
-        definitions: [
-          {
-            definition: "To promote or advantage.",
-            synonyms: [],
-            antonyms: [],
-          },
-          {
-            definition: "To move forward in space or time.",
-            synonyms: [],
-            antonyms: [],
-          },
-          { definition: "To raise, be raised.", synonyms: [], antonyms: [] },
-        ],
-        synonyms: [
-          "accelerate",
-          "adduce",
-          "aggrandize",
-          "allege",
-          "assign",
-          "elevate",
-          "exalt",
-          "heighten",
-          "improve",
-          "raise",
-        ],
-        antonyms: ["regress", "retract"],
-      },
-      {
-        partOfSpeech: "adjective",
-        definitions: [
-          {
-            definition: "Completed before necessary or a milestone event.",
-            synonyms: [],
-            antonyms: [],
-            example:
-              "He made an advance payment on the prior shipment to show good faith.",
-          },
-          {
-            definition: "Preceding",
-            synonyms: [],
-            antonyms: [],
-            example: "The advance man came a month before the candidate.",
-          },
-          {
-            definition: "Forward",
-            synonyms: [],
-            antonyms: [],
-            example: "The scouts found a site for an advance base.",
-          },
-        ],
-        synonyms: [],
-        antonyms: [],
-      },
-    ],
-    license: {
-      name: "CC BY-SA 3.0",
-      url: "https://creativecommons.org/licenses/by-sa/3.0",
-    },
-    sourceUrls: ["https://en.wiktionary.org/wiki/advance"],
-  },
-];
+import {
+  Header,
+  Container,
+  WordSearch,
+  WordResponse,
+  WordNotFound,
+} from "../components";
+import { DictionaryResult } from "../@types";
+import { dictionaryBaseApi } from "../constant";
+import axios from "axios";
 
 export const Main: React.FC = () => {
   const [word, setWord] = useState("");
-  const [definitionResponse, setDefinitionResponse] = useState(
-    dummyResponse[0]
-  );
+  const [isEmptyWord, setIsEmptyWord] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [definitionResponse, setDefinitionResponse] =
+    useState<DictionaryResult | null>(null);
 
   const handleWordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setWord(event.target.value);
+    setIsEmptyWord(false);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(word);
+    setIsError(false);
+    if (!word?.trim()?.length) {
+      setIsEmptyWord(true);
+    }
+
+    const endpoint = `${dictionaryBaseApi}/${word}`;
+    setIsLoading(true);
+    try {
+      const {data} = await axios.get<DictionaryResult[] | null>(endpoint);
+      if(!data) {
+        throw new Error("No response returned")
+      }
+      const [firstWord] = data;
+      console.log(data);
+      setDefinitionResponse(firstWord)
+    } catch (error) {
+      console.log(error);
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
   };
   return (
     <>
@@ -136,10 +55,19 @@ export const Main: React.FC = () => {
         <Header />
         <WordSearch
           word={word}
+          isEmptyWord={isEmptyWord}
           handleChange={handleWordChange}
           onSubmit={handleSubmit}
         />
-        <WordResponse definitionResponse={definitionResponse} />
+        {isLoading ? (
+          <div className="flex items-center justify-center min-h-[50vh]">
+            <Spinner color="purple" size="xl" />
+          </div>
+        ) : isError ? (
+          <WordNotFound />
+        ) : isEmptyWord ? null : definitionResponse ? (
+          <WordResponse definitionResponse={definitionResponse} />
+        ) : null}
       </Container>
     </>
   );

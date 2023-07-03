@@ -52,6 +52,24 @@ export const WordResponse: React.FC<Props> = ({ definitionResponse }) => {
           <WordMeaning meaning={meaning} key={meaning?.partOfSpeech} />
         ))}
       </div>
+      <div className="mt-4 lg:mt-8">
+        <hr className="border-gray-text" />
+        <div className="flex items-center justify-between mt-2 lg:mt-4">
+          <h2 className="text-sm lg:text-base font-medium text-gray-text">
+            source
+          </h2>
+          {definitionResponse?.sourceUrls?.map((sourceUrl) => (
+            <a
+              key={sourceUrl}
+              href={sourceUrl}
+              target="_blank"
+              className="underline hover:opacity-50 cursor-pointer"
+            >
+              {sourceUrl}
+            </a>
+          ))}
+        </div>
+      </div>
     </section>
   );
 };
