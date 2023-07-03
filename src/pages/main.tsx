@@ -30,18 +30,19 @@ export const Main: React.FC = () => {
     setIsError(false);
     if (!word?.trim()?.length) {
       setIsEmptyWord(true);
+      return;
     }
 
     const endpoint = `${dictionaryBaseApi}/${word}`;
     setIsLoading(true);
     try {
-      const {data} = await axios.get<DictionaryResult[] | null>(endpoint);
-      if(!data) {
-        throw new Error("No response returned")
+      const { data } = await axios.get<DictionaryResult[] | null>(endpoint);
+      if (!data) {
+        throw new Error("No response returned");
       }
       const [firstWord] = data;
       console.log(data);
-      setDefinitionResponse(firstWord)
+      setDefinitionResponse(firstWord);
     } catch (error) {
       console.log(error);
       setIsError(true);

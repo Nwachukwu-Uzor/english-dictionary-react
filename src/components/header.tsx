@@ -23,7 +23,7 @@ export const Header: React.FC = () => {
   ) as ThemeContextType;
 
   return (
-    <div className="py-2 flex items-center justify-between">
+    <div className="py-3 lg:py-6 flex items-center justify-between">
       <BiBookAlt className="text-xl lg:text-3xl text-gray-text" />
       <div className="flex items-center gap-2 lg:gap-4">
         <Dropdown
